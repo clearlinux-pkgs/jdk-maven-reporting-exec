@@ -1,0 +1,61 @@
+diff --git a/src/main/java/org/apache/maven/reporting/exec/DefaultMavenPluginManagerHelper.java b/src/main/java/org/apache/maven/reporting/exec/DefaultMavenPluginManagerHelper.java
+index 5be4eea..b15879c 100644
+--- a/src/main/java/org/apache/maven/reporting/exec/DefaultMavenPluginManagerHelper.java
++++ b/src/main/java/org/apache/maven/reporting/exec/DefaultMavenPluginManagerHelper.java
+@@ -91,34 +91,9 @@ public class DefaultMavenPluginManagerHelper
+         }
+     }
+ 
+-    private boolean isEclipseAether()
+-    {
+-        if ( isEclipseAether == null )
+-        {
+-            try
+-            {
+-                Thread.currentThread().getContextClassLoader().loadClass( "org.sonatype.aether.graph.DependencyFilter" );
+-                isEclipseAether = false;
+-            }
+-            catch ( ClassNotFoundException e )
+-            {
+-                isEclipseAether = true;
+-            }
+-        }
+-
+-        return isEclipseAether.booleanValue();
+-    }
+-
+     private Object createExclusionsDependencyFilter( List<String> artifactIdsList )
+     {
+-        if ( isEclipseAether() )
+-        {
+-            return new org.eclipse.aether.util.filter.ExclusionsDependencyFilter( artifactIdsList );
+-        }
+-        else
+-        {
+-            return new org.sonatype.aether.util.filter.ExclusionsDependencyFilter( artifactIdsList );
+-        }
++        return new org.eclipse.aether.util.filter.ExclusionsDependencyFilter( artifactIdsList );
+     }
+ 
+     public PluginDescriptor getPluginDescriptor( Plugin plugin, MavenSession session )
+diff --git a/src/test/java/org/apache/maven/reporting/exec/TestDefaultMavenReportExecutor.java b/src/test/java/org/apache/maven/reporting/exec/TestDefaultMavenReportExecutor.java
+index a6c37bf..adfe03a 100644
+--- a/src/test/java/org/apache/maven/reporting/exec/TestDefaultMavenReportExecutor.java
++++ b/src/test/java/org/apache/maven/reporting/exec/TestDefaultMavenReportExecutor.java
+@@ -44,11 +44,11 @@ import org.codehaus.plexus.PlexusTestCase;
+ import org.codehaus.plexus.classworlds.realm.ClassRealm;
+ import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+ import org.codehaus.plexus.logging.Logger;
+-import org.sonatype.aether.RepositorySystemSession;
+-import org.sonatype.aether.artifact.Artifact;
+-import org.sonatype.aether.repository.RemoteRepository;
+-import org.sonatype.aether.repository.WorkspaceReader;
+-import org.sonatype.aether.repository.WorkspaceRepository;
++import org.eclipse.aether.RepositorySystemSession;
++import org.eclipse.aether.artifact.Artifact;
++import org.eclipse.aether.repository.RemoteRepository;
++import org.eclipse.aether.repository.WorkspaceReader;
++import org.eclipse.aether.repository.WorkspaceRepository;
+ 
+ import java.io.File;
+ import java.util.Collections;

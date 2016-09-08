@@ -1,0 +1,12 @@
+# convert CR+LF to LF
+sed -i 's/\r//g' pom.xml src/main/java/org/apache/maven/reporting/exec/*
+
+python3 /usr/share/java-utils/pom_editor.py pom_remove_plugin org.apache.maven.plugins:maven-enforcer-plugin
+
+
+# Build against Maven 3.x, Eclipse Aether and Eclipse Sisu
+python3 /usr/share/java-utils/pom_editor.py pom_remove_dep org.sonatype.aether:aether-api
+python3 /usr/share/java-utils/pom_editor.py pom_remove_dep org.sonatype.aether:aether-util
+python3 /usr/share/java-utils/pom_editor.py pom_change_dep org.sonatype.aether:aether-connector-wagon org.eclipse.aether:aether-transport-wagon
+
+python3 /usr/share/java-utils/pom_editor.py pom_change_dep org.sonatype.sisu:sisu-inject-plexus org.eclipse.sisu:org.eclipse.sisu.plexus
